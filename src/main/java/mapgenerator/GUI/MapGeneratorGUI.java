@@ -5,19 +5,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 
-import main.java.mapgenerator.tiles.Tile;
+import main.java.mapgenerator.TILES.Tile;
 
 public class MapGeneratorGUI extends JPanel {
     
-    final int panelWidth = 800;//1280;
-    final int panelHeight = 800; //800;
+    final int panelWidth = 800;
+    final int panelHeight = 800; 
     final int rowTiles = 64;
     final int colTiles = 64;
   
     public Tile selectedTile;
-    public JPanel mapPanel;
     private Grid gr= new Grid(rowTiles, colTiles, this);
-    //private ScrollBars sb = new ScrollBars(this);
+
 
     public MapGeneratorGUI(){
         selectedTile = null;
@@ -29,11 +28,6 @@ public class MapGeneratorGUI extends JPanel {
 
         setLayout(new BorderLayout());
         add(gr);
-        //add(gr,BorderLayout.CENTER);
-
-        //add(sb.getScrollBarV(), BorderLayout.EAST);
-        //add(sb.getScrollBarH(), BorderLayout.SOUTH);
         
-
     }
 }

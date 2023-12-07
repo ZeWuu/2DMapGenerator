@@ -1,27 +1,26 @@
-package main.java.mapgenerator.tiles;
+package main.java.mapgenerator.TILES;
 
 import javax.swing.ImageIcon;
 
 public class Tile {
-    private int id;
-    private ImageIcon image;
+ 
+    public ImageIcon image; 
 
-    public Tile(int id, ImageIcon image){
-        this.id = id;
-        this.image = image;
-    }
+    public static class builder {
+        Tile tile;
 
-    public int getId(){
-        return id;
-    }
-    public void setId(int id){
-        this.id = id;
-    }
+        public builder() {
+            tile = new Tile();
+        }
 
-    public ImageIcon getImage(){
-        return image;
-    }
-    public void setImage(ImageIcon image){
-        this.image = image;
+        public Tile build() {
+            return tile;
+        }
+
+        public builder image(ImageIcon image) {
+            tile.image = image;
+            return this;
+        }
+
     }
 }

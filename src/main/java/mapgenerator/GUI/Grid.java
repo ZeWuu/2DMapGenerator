@@ -7,23 +7,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseMotionListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Image;
-
+import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import main.java.mapgenerator.TILES.Tiles;
 
 public class Grid extends JPanel {
-    private int rowTiles;
-    private int colTiles;
-    private MapGeneratorGUI panel;
-    private JButton[][] buttons;
 
-    public Grid(int rowTiles, int colTiles, MapGeneratorGUI panel) {
-        this.rowTiles = rowTiles;
-        this.colTiles = colTiles;
-        this.panel = panel;
+    public JButton[][] buttons;
+    public Map<JButton, Tiles> tiles = new HashMap<JButton, Tiles>();
+    private int xSize;
+    final int panelWidth = 800;
+    final int panelHeight = 800;
+    final int rowTiles = 64;
+    final int colTiles = 64;
+
+    public Grid() {
+
+        this.setPreferredSize(new Dimension(panelWidth, panelHeight));
+        this.setBackground(Color.white);
+        this.setDoubleBuffered(true);
+        this.setFocusable(true);
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -42,8 +54,8 @@ public class Grid extends JPanel {
     }
 
     public void calculateSize() {
-        int sizeX = panel.getSize().width;
-        int xSize = sizeX / rowTiles;
+        int sizeX = this.getSize().width;
+        xSize = sizeX / rowTiles;
 
         setLayout(new GridLayout(rowTiles, colTiles));
         Dimension buttonSize = new Dimension(xSize, xSize);
@@ -56,23 +68,75 @@ public class Grid extends JPanel {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        Image originalImage = TilesPanel.getSelectedImage().getImage();
-                        Image resizedImage = originalImage.getScaledInstance(
-                        buttonSize.width, buttonSize.height, Image.SCALE_SMOOTH);
-                        ImageIcon resizedIcon = new ImageIcon(resizedImage);
-                
-                        button.setBorder(null);
-                        button.setIcon(resizedIcon);
-                        //button.setIcon(TilesPanel.getSelectedImage());
+
+                        if (TilesPanel.getSelectedImage() == null) {
+                            tiles.remove(button);
+                            button.setIcon(null);
+                            button.setBackground(Color.WHITE);
+                        } else {
+                            if (button.getIcon() != null) {
+                                tiles.remove(button);
+                            }
+                            tiles.put(button, TilesPanel.getSelectedTile());
+                            Image originalImage = TilesPanel.getSelectedImage().getImage();
+                            Image resizedImage = originalImage.getScaledInstance(
+                                    buttonSize.width, buttonSize.height, Image.SCALE_SMOOTH);
+                            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+                            button.setIcon(resizedIcon);
+                            button.setBackground(null);
+
+                        }
                     }
 
                 });
-                // button.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4,
-                // Color.BLACK));
-              
+                button.addMouseMotionListener(new MouseMotionListener() {
+                    @Override
+                    public void mouseDragged(java.awt.event.MouseEvent e) {
+                        Point relativeMousePoint = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(),
+                                Grid.this);
+
+                        int row = (int) relativeMousePoint.y / xSize - 2;
+                        int col = (int) relativeMousePoint.x / xSize - 1;
+
+                        if (row >= 0 && row < rowTiles && col >= 0 && col < colTiles) {
+                            JButton button = buttons[row][col];
+                            if (TilesPanel.getSelectedImage() == null) {
+                                tiles.remove(button);
+                                button.setIcon(null);
+                                button.setBackground(Color.WHITE);
+                            } else {
+                                if (button.getIcon() != null) {
+                                    tiles.remove(button);
+                                }
+                                tiles.put(button, TilesPanel.getSelectedTile());
+                                Image originalImage = TilesPanel.getSelectedImage().getImage();
+                                Image resizedImage = originalImage.getScaledInstance(
+                                        buttonSize.width, buttonSize.height, Image.SCALE_SMOOTH);
+                                ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+                                button.setIcon(resizedIcon);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void mouseMoved(java.awt.event.MouseEvent e) {
+                    }
+                });
+
                 button.setBackground(Color.WHITE);
                 add(button);
             }
         }
+    }
+
+    public JButton[][] getButtons() {
+        return buttons;
+    }
+
+    public Map<JButton, Tiles> getTiles() {
+        return tiles;
     }
 }

@@ -13,8 +13,8 @@ public class MapGenerator {
 
         JFrame window = new JFrame();
 
-        MapGeneratorGUI GUI = new MapGeneratorGUI();
-        TilesPanel tilesPanel = new TilesPanel();
+        Grid GUI = new Grid();
+        TilesPanel tilesPanel = new TilesPanel(GUI);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("MapGenerator");

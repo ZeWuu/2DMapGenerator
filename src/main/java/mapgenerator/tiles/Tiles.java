@@ -7,7 +7,8 @@ public enum Tiles {
     WATER(2),
     BRICK_WALL(3),
     SAND(4),
-    ROAD(5);
+    ROAD(5),
+    LIGHT_BRICK_ROAD(6);
 
     private final int value;
 

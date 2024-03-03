@@ -34,9 +34,9 @@ public class SaveButton extends JButton {
         for (int i = 0; i < buttonsArray.length; i++) {
             for (int j = 0; j < buttonsArray[i].length; j++) {
                 if (tiles.get(buttonsArray[i][j]) != null) {
-                    out.print(tiles.get(buttonsArray[i][j]).getValue());
+                    out.print(tiles.get(buttonsArray[i][j]).getValue() + " ");
                 } else {
-                    out.print("#");
+                    out.print("# ");
                 }
             }
             out.println();

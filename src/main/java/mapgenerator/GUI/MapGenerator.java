@@ -2,7 +2,7 @@ package main.java.mapgenerator.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
+import java.awt.FlowLayout;
 import java.io.IOException;
 
 
@@ -19,9 +19,10 @@ public class MapGenerator {
         window.setResizable(false);
         window.setTitle("MapGenerator");
         window.setPreferredSize(new Dimension(1300, 900));
+        window.setLayout(new FlowLayout());
 
-        window.add(GUI, BorderLayout.WEST);
-        window.add(tilesPanel, BorderLayout.EAST);
+        window.add(GUI);
+        window.add(tilesPanel);
 
         window.pack();
 

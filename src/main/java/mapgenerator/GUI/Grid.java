@@ -1,5 +1,6 @@
 package main.java.mapgenerator.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.awt.Image;
 import java.awt.Point;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -36,6 +38,9 @@ public class Grid extends JPanel {
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
+        this.setLayout(new GridLayout(64, 64));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        ;
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -96,8 +101,10 @@ public class Grid extends JPanel {
                         Point relativeMousePoint = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(),
                                 Grid.this);
 
-                        int row = (int) relativeMousePoint.y / xSize - 2;
-                        int col = (int) relativeMousePoint.x / xSize - 1;
+                        // Adding coordinates of first button [0][0], to make it precise, panel is
+                        // bigger than grid itself
+                        int row = (int) Math.round((relativeMousePoint.y - 16) / xSize);
+                        int col = (int) Math.round((relativeMousePoint.x - 15) / xSize);
 
                         if (row >= 0 && row < rowTiles && col >= 0 && col < colTiles) {
                             JButton button = buttons[row][col];
